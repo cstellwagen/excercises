@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        var likes = 1000;
+        var share = 1000;
+
+        $(document).ready(function(){
+
+            // After loading the page, open login dialog
+            $('#dialog-form').dialog({
+                height: 400,
+                width: 350,
+                modal: true
+            }).parent().find('.ui-dialog-titlebar-close').hide(); // Hide the close button
+
+            // Click functionality of the detail information from the "other" videos
+            $(".videoGalleryInfoButton").click(function(){
+                //change image to plus or minus if subinfo is shown or not
+                if($(this).next().is(":hidden")) {
+                    $(this).attr("src", "images/minus-circle.png");
+                }
+                else {
+                    $(this).attr("src", "images/plus-circle.png");
+                }
+
+                $(this).next().slideToggle();
+            });
+        });
+
+        // Check if a cookie exist to load user information
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function checkLogin() {
+            var formData = $("form").serializeArray();
+            var formMail, formPwd;
+            $.each(formData, function(i, field){
+                if(field.name === "mail"){
+                    formMail = field.value;
+                }
+                else if(field.name === "password"){
+                    formPwd = field.value;
+                }
+            });
+
+            if(formMail.length !== 0 && formPwd.length !== 0) {
+                var patt = new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$");
+                if(patt.test(formMail)) {
+                    var pwd = getCookie(formMail + "pass**");
+
+                    if (pwd === formPwd) {
+                        var user = getCookie(formMail + "user**");
+                        var path = "images/user.jpg"; //getCookie(formMail + "path**");
+
+                        var name = document.getElementById("uName");
+                        var img = document.getElementById("uImg");
+
+                        if(user.length > 0) {
+                            name.innerHTML = user;
+                        }
+                        else {
+                            var fn = getCookie(formMail + "fn**");
+                            var ln = getCookie(formMail + "ln**");
+                            name.innerHTML = fn + " " + ln;
+                        }
+
+                        $(img).attr("src", path);
+
+                        $('#dialog-form').dialog('close');
+                    }
+                    else {
+                        window.alert("No account is founded. Please register first.");
+
+                        //Open login page
+                        var curPage = location.href;
+                        var path = curPage.substr(0, curPage.lastIndexOf("/"));
+                        location.href = path + "/excercise2.1.html";
+                    }
+                }
+                else {
+                    window.alert("Input of mail field has the wrong structure.");
+                }
+            }
+            else {
+                window.alert("Please fill out all fields.");
+            }
+        }
+
+        // increase the likes after click on the symbol
+        function increaseLikes() {
+            likes++;
+            document.getElementById("showLike").innerHTML = likes + " likes"
+        }
+
+        // increase the share after click on the symbol
+        function increaseShare() {
+            share++;
+            document.getElementById("showShare").innerHTML = share + " sharing"
+        }
+
+        // drag and drop functionality to change the videos
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+
+            //Swap Video source
+            var source1 = ev.target.childNodes[1];
+            var source2 = document.getElementById(data).childNodes[1].childNodes[1];
+            swapAttribute("src", source1, source2);
+            // It is necessary to reload videos after swapping
+            $(ev.target)[0].load();
+            $(document.getElementById(data).childNodes[1])[0].load();
+
+            //Swap title and description
+            var title1 = document.getElementById("curVideoTitle");
+            var title2 = document.getElementById(data).childNodes[3];
+            swapText(title1, title2);
+            var info1 = document.getElementById("curVideoInfo");
+            var info2 = document.getElementById(data).childNodes[3].childNodes[3];
+            swapText(info1, info2);
+        }
+
+        function swapAttribute(attrName, element1, element2) {
+            var attr1 = element1.getAttribute(attrName);
+            //console.log(element1);
+            //console.log(attr1);
+            var attr2 = element2.getAttribute(attrName);
+            //console.log(element2);
+            //console.log(attr2);
+            $(element1).attr(attrName, attr2);
+            $(element2).attr(attrName, attr1);
+        }
+
+        function swapText(element1, element2) {
+            var txt1 = element1.childNodes[0].nodeValue;
+            //console.log(element1);
+            //console.log(txt1);
+            var txt2 = element2.childNodes[0].nodeValue;
+            //console.log(element2);
+            //console.log(txt2);
+            element1.childNodes[0].nodeValue = txt2;
+            element2.childNodes[0].nodeValue = txt1;
+        }
+
+    </script>
+</head>
+<body>
+<div id="dialog-form" title="Login">
+    <p>Please fill out your login data:</p>
+
+    <form>
+        <fieldset>
+            Email<br>
+            <input type="email" name="mail" id="mail" value="" placeholder="example@gmail.de" title="Mail address"><br>
+            Password<br>
+            <input type="password" name="password" id="password" value=""><br><br>
+
+            <input type="button" name="loginBtn" value="login" onclick="checkLogin()">
+        </fieldset>
+    </form>
+</div>
+
+<header>
+    <!-- Logo is part of the header -->
+    <div class="surf col-8 col-m-12">Surf&nbsp;<sup>&reg;</sup></div>
+    <div class="col-4 col-m-12">
+        <div class="userMenu">
+            <span class="userName" id="uName">User name</span>
+            <img id="uImg" src="images/userDummy.png" alt="User picture" class="headerImage center">
+        </div>
+    </div>
+</header>
+
+<section class="mainpage">
+    <div class="tophalf  col-12 col-m-12">
+        <h1 id="curVideoTitle">Southside 2017</h1>
+        <!-- Current Video details -->
+        <div class="col-4 col-m-12">
+            <p>
+                <img src="images/heart.png" alt="Like" class="floatTop" onclick="increaseLikes()" style="cursor:pointer">
+                <span id="showLike">1000 likes</span>
+            </p>
+            <p>
+                <img src="images/share.png" alt="Share" class="floatTop" onclick="increaseShare()" style="cursor:pointer">
+                <span id="showShare">1000 sharing</span>
+            </p>
+            <p>
+                <img src="images/eye.png" alt="Viewer" class="floatTop">
+                100.123 viewer
+            </p>
+            <p id="curVideoInfo">
+                Band Linkin Park at the Southside 2017
+            </p>
+        </div>
+        <!-- Current Video -->
+        <div class="col-8 col-m-12">
+            <div id="curVideo" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <video id="mainVideo" controls height="480">
+                    <source src="videos/video.mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
+            </div>
+        </div>
+    </div>
+    <!-- Other Videos -->
+    <div class="bottomhalf col-12 col-m-12">
+        <h1>Other Videos</h1>
+        <!-- Video on the left -->
+        <div class="videoGalleryContainer col-4 col-m-4">
+            <div class="videoGallery" draggable="true" ondragstart="drag(event)" id="videoSub1" style="cursor:move">
+                <video controls height="240">
+                    <source src="videos/video1.mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
+                <div class="videoGallerySubtitle">
+                    Fashion show
+                    <img src="images/plus-circle.png" alt="More information" class="videoGalleryInfoButton center" style="cursor:pointer">
+                    <p class="videoGallerySubInfo">Fashion show in la latina</p>
+                </div>
+            </div>
+        </div>
+        <!-- Video in the center -->
+        <div class="videoGalleryContainer col-4 col-m-4">
+            <div class="videoGallery"  draggable="true" ondragstart="drag(event)" id="videoSub2" style="cursor:move">
+                <video controls height="240">
+                    <source src="videos/video2.mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
+                <div class="videoGallerySubtitle">
+                    Flamenco show
+                    <img src="images/plus-circle.png" alt="More information" class="videoGalleryInfoButton center" style="cursor:pointer">
+                    <p class="videoGallerySubInfo">Flamenco show in Barcelona</p>
+                </div>
+            </div>
+        </div>
+        <!-- Video on the right -->
+        <div class="videoGalleryContainer col-4 col-m-4">
+            <div class="videoGallery"  draggable="true" ondragstart="drag(event)" id="videoSub3" style="cursor:move">
+                <video controls height="240">
+                    <source src="videos/video3.mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
+                <div class="videoGallerySubtitle">
+                    Scooter Video
+                    <img src="images/plus-circle.png" alt="More information" class="videoGalleryInfoButton center" style="cursor:pointer">
+                    <p class="videoGallerySubInfo">Video with a scooter</p>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End Other Videos -->
+</section>
+
+<footer class="col-12 col-m-12">
+    <!-- Logo is part of the footer -->
+    <div class="menu2">
+        <img src="images/copyright.png" alt="Copyright" class="top">
+        <a href="https://www.magicseaweed.com/" target="_blank">Surf</a> |
+        <img src="images/facebook-box.png" alt="Facebook" class="top">
+        <a href="https://www.facebook.com/" target="_blank">Facebook</a> |
+        <img src="images/twitter.png" alt="Twitter" class="top">
+        <a href="https://twitter.com/" target="_blank">Twitter</a>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+.headfoot
+{
+    background-color: darkseagreen;
+    color: white;
+    border:5px solid black;
+    float:left;
+    width: 99%;
+    border-radius: 25px;
+    height: 100%;
+    padding:10px;
+}
+.logo
+{
+    float:left;
+}
+#whale
+{
+    width:109px;
+    height:87px;
+}
+.surf
+{
+    font-size: 87px;
+    font-variant:small-caps;
+    font-family: Impact, "Courier New", monospace;
+    float:left;
+    padding: 10px;
+}
+.menu
+{
+    float:right;
+    font-size: large;
+}
+.mainpage
+{
+    width: 100%;
+    background-image: url(../images/optionalback.jpg);
+    background-size: cover;
+    color: black;
+    border-top:10px solid white;
+    border-bottom:10px solid white;
+    float:left;
+    padding:10px;
+}
+.tophalf
+{
+    border-bottom: double darkred;
+    width: 100%;
+    float:left;
+}
+.third
+{
+    width: 33.333333%;
+    float:left;
+    height: 100%;
+}
+.titles
+{
+    width: 33.333333%;
+    float:left;
+    height: 100%;
+}
+#pro
+{
+    width:90px;
+    height:90px;
+}
+.twothird
+{
+    width: 66.666667%;
+    float:left;
+    height:100%;
+}
+.bottomhalf
+{
+    width: 100%;
+    float:left;
+}

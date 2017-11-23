@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Playin round</title>
+    <link rel="stylesheet" type="text/css" href="style/stylesheet3.css">
+
+</head>
+
+
+<body>
+<header class="col-12 col-m-12">
+    <div class="surf"> Surf &reg;</div>
+    <div class="dropdown">
+        <button onclick="myFunction()">
+            <img src="./images/user.jpg" alt = "user" class = "userPic">
+        </button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href = "./account.html" class = "ddlink">Account</a>
+            <a href = "2" class = "ddlink">Settings</a>
+            <a href = "3" class = "ddlink">Your Channels</a>
+            <a href = "4" class = "ddlink">Logout</a>
+        </div>
+    </div>
+    <div id = "test"></div>
+
+</header>
+
+<section class="mainpage col-12 mainsection">
+    <div class="col-9 col-m-8 vids">
+        <h1>Top Videos this week:</h1>
+        <div class="col-12">
+            <div class="gallery">
+                <a target="_blank" href="./videos/video.mp4">
+                    <video width="300"  height="200" controls>
+                        <source src="./videos/video.mp4" type="video/mp4">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </a>
+                <div class="desc">Add a description of the image here</div>
+            </div>
+
+            <div class="gallery">
+                <a target="_blank" href="./videos/video1.mp4">
+                    <video width="300"  height="200" controls>
+                        <source src="./videos/video1.mp4" type="video/mp4">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </a>
+                <div class="desc">Add a description of the image here</div>
+            </div>
+
+            <div class="gallery">
+                <a target="_blank" href="./videos/video2.mp4">
+                    <video width="300"  height="200" controls>
+                        <source src="./videos/video2.mp4" type="video/mp4">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </a>
+                <div class="desc">Add a description of the image here</div>
+            </div>
+
+            <div class="gallery">
+                <a target="_blank" href="./videos/video3.mp4">
+                    <video width="300"  height="200" controls>
+                        <source src="./videos/video3.mp4" type="video/mp4">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </a>
+                <div class="desc">Add a description of the image here</div>
+            </div>
+
+            <br>
+        </div>
+        <div class = "col-12">
+            <h1>Recommended for you:</h1>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class = "col-12">
+                <h1>Watch it again:</h1>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class = "col-3 col-m-4 friends">
+        here too!!
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+    </div>
+</section>
+
+<footer class="col-12">
+
+    <div class="menu2">
+        <img src="images/copyright.png" alt="Copyright" class="top">
+        <a href="https://www.magicseaweed.com/" target="_blank">Surf</a> |
+        <img src="images/facebook-box.png" alt="Facebook" class="top">
+        <a href="https://www.facebook.com/" target="_blank">Facebook</a> |
+        <img src="images/twitter.png" alt="Twitter" class="top">
+        <a href="https://twitter.com/" target="_blank">Twitter</a>
+    </div>
+
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    /*$(document).ready(function(){
+     $("#_credit").click(function(){
+     $("#btPanel").slideUp("slow");
+     $("#payPanel").slideUp("slow");
+     $("#creditPanel").slideDown("slow");
+     console.log("click");
+
+     });
+     $("#_bt").click(function(){
+     $("#creditPanel").slideUp("slow");
+     $("#payPanel").slideUp("slow");
+     $("#btPanel").slideDown("slow");
+     });
+     $("#_paypal").click(function(){
+     $("#btPanel").slideUp("slow");
+     $("#creditPanel").slideUp("slow");
+     $("#payPanel").slideDown("slow");
+     });
+
+     });*/
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.userPic')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

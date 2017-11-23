@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment One</title>
+    <link rel="stylesheet" type="text/css" href="style/stylesheet3.css">
+
+
+    <script>
+        function setCookie(cname, cvalue, exdays)
+        {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires="+d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+        function returnValue(cname)
+        {
+            var ca = document.cookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(cname) == 0) {
+                    return c.substring(cname.length);
+                }
+            }
+            return "";
+        }
+        function getCookie(cname, cpass) {
+            var name = cname; // + "=" took out
+            var ca = document.cookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    if(c.indexOf(cpass) != -1)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function checkCookie()
+        {
+            while (true) {
+                var user = prompt("Please enter your email:", "");
+                var pass = prompt("Please enter your password", "");
+                var userm = user.match(/\w+@\w+.\w+/g);
+                var passm = pass.match(/^\w{1,8}$/g);
+                if(!userm)
+                {
+                    alert("The email is in an incorrect format. It must be ___@___.___ where the spaces are filled with letters and/or numbers");
+                }
+                else if (!passm)
+                {
+                    alert("The password is in an incorrect format. Passwords must be between 1-8 characters long and can only be comprised of numbers and letters");
+                }
+                else if (user != "" && user != null && pass != "" && pass != null)
+                {
+                    break;
+                }
+                else
+                {
+                    alert("Please fill in both fields!");
+                }
+
+            }
+            refresh(user, pass);
+        }
+
+        function refresh(user, pass)
+        {
+            var tf = getCookie(user, pass);
+            if (tf) {
+                document.getElementsByName("email")[0].value = user;
+                document.getElementsByName("password")[0].value = pass;
+                var name = user; //+ "=" taken out
+                var ca = document.cookie.split(';');
+                for(var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        //right cookie
+                        var res;
+                        var sub = c.substring(name.length);
+                        c = sub;
+                        if(c.indexOf("user**") == 0)
+                        {
+                            res = c.substring(c.indexOf("user**") + 7, c.length);
+                            document.getElementsByName("username")[0].value = res;
+                        }
+                        if(c.indexOf("fn**") == 0)
+                        {
+                            res = c.substring(c.indexOf("fn**") + 5, c.length);
+                            document.getElementsByName("firstname")[0].value = res;
+                        }
+                        if(c.indexOf("ln**") == 0)
+                        {
+                            res = c.substring(c.indexOf("ln**") + 5, c.length);
+                            document.getElementsByName("lastname")[0].value = res;
+                        }
+                        if(c.indexOf("dob**")  == 0)
+                        {
+                            res = c.substring(c.indexOf("dob**") + 6, c.length);
+                            document.getElementsByName("bday")[0].value = res;
+                        }
+                        /*
+                        if(c.indexOf("path**") == 0)
+                        {
+                            res = c.substring(c.indexOf("path**") + 7, c.length);
+                            document.getElementsByName("photo")[0].value = res;
+                        } */
+                        if(c.indexOf("lang**") == 0)
+                        {
+                            res = c.substring(c.indexOf("lang**") + 7, c.length);
+                            if (res == "eng")
+                            {
+                                document.getElementById("_english").checked = true;
+                                document.getElementById("_spanish").checked = false;
+                                document.getElementById("_german").checked = false;
+                            }
+                            else if (res == "span")
+                            {
+                                document.getElementById("_english").checked = false;
+                                document.getElementById("_spanish").checked = true;
+                                document.getElementById("_german").checked = false;
+                            }
+                            else
+                            {
+                                document.getElementById("_english").checked = false;
+                                document.getElementById("_spanish").checked = false;
+                                document.getElementById("_german").checked = true;
+                            }
+                        }
+                        if(c.indexOf("add**") == 0)
+                        {
+                            res = c.substring(c.indexOf("add**") + 6, c.length);
+                            document.getElementsByName("address")[0].value = res;
+                        }
+                        if(c.indexOf("pay**") == 0)
+                        {
+                            res = c.substring(c.indexOf("pay**") + 6, c.length);
+                            if (res == "c")
+                            {
+                                document.getElementById("_credit").checked = true;
+                                document.getElementById("_bt").checked = false;
+                                document.getElementById("_paypal").checked = false;
+                                $("#creditPanel").slideDown("slow");
+                                console.log("load1");
+                                console.log(res);
+                            }
+                            else if (res == "b")
+                            {
+                                document.getElementById("_credit").checked = false;
+                                document.getElementById("_bt").checked = true;
+                                document.getElementById("_paypal").checked = false;
+                                $("#btPanel").slideDown("slow");
+                                console.log("load2");
+                            }
+                            else if (res == "")
+                            {
+                                document.getElementById("_credit").checked = false;
+                                document.getElementById("_bt").checked = false;
+                                document.getElementById("_paypal").checked = false;
+                                $("#btPanel").slideUp("slow");
+                                $("#creditPanel").slideUp("slow");
+                                $("#payPanel").slideUp("slow");
+                                console.log("load3");
+                            }
+                            else
+                            {
+                                document.getElementById("_credit").checked = false;
+                                document.getElementById("_bt").checked = false;
+                                document.getElementById("_paypal").checked = true;
+                                $("#payPanel").slideDown("slow");
+                                console.log("load4");
+                            }
+                        }
+                        if(c.indexOf("cn**") == 0)
+                        {
+                            res = c.substring(c.indexOf("cn**") + 5, c.length);
+                            document.getElementsByName("cardNum")[0].value = res;
+                        }
+                        if(c.indexOf("vt**") == 0)
+                        {
+                            res = c.substring(c.indexOf("vt**") + 5, c.length);
+                            document.getElementsByName("exp")[0].value = res;
+                        }
+                        if(c.indexOf("cvv**") == 0)
+                        {
+                            res = c.substring(c.indexOf("cvv**") + 6, c.length);
+                            document.getElementsByName("cvv")[0].value = res;
+                        }
+                    }
+                }
+            }
+            else {
+                if (user != "" && user != null) {
+                    setCookie(user + "user**", "", 365);
+                    setCookie(user + "pass**", pass, 365);
+                    setCookie(user + "fn**", "", 365);
+                    setCookie(user + "ln**", "", 365);
+                    setCookie(user + "dob**", "", 365);
+                    //setCookie(user + "path**", "", 365);
+                    setCookie(user + "lang**", "eng", 365);
+                    setCookie(user + "add**", "", 365);
+                    setCookie(user + "pay**", "c", 365);
+                    setCookie(user + "cn**", "", 365);
+                    setCookie(user + "vt**", "", 365);
+                    setCookie(user + "cvv**", "", 365);
+                    document.getElementsByName("email")[0].value = user;
+                    document.getElementsByName("password")[0].value = pass;
+                    document.getElementById("_credit").checked = false;
+                }
+            }
+        }
+    </script>
+</head>
+
+
+<body onload="checkCookie()">
+<header class="col-12 col-m-12">
+    <div class="surf"> Surf &reg;</div>
+    <div class="menu col-m-12">
+
+        <div class="link"><a href="http://www.netflix.com" target="_blank">Back to Site</a> &nbsp;</div>
+        <div class="link"><a href="http://www.imdb.com" target="_blank">IMDB</a> &nbsp;</div>
+        <div class="link"><a href="http://beattapeco-op.com/?p=4262" target="_blank">Your Cart</a> &nbsp;</div>
+    </div>
+
+
+</header>
+
+<section class="mainpage col-12">
+    <form id = "myform">
+        <div class="tophalf col-12 mainsection">
+            <div>
+                <div class="col-4 col-m-12">
+                    <br><br>
+                    <strong>Account Information: </strong>
+                </div>
+
+                <div class="col-4 col-m-12 mainsection">
+                    <br><br>
+                    <span class="red">*</span> Username:
+                    <input type="text" name="username" required>
+                </div>
+                <div class="col-4 col-m-12 mainsection">
+                    <div id = "req">* Indicates Required Field</div><br><br>
+                    <span class="red">*</span> Password:
+                    <input type="text" name="password" pattern = "^\w{1,8}$" required><br>
+                    <br>Note: passwords must be between 1-8 characters long and can only be comprised of numbers and letters
+                </div>
+            </div>
+        </div>
+        <div class="tophalf col-12 mainsection">
+            <div class="col-4 col-m-12">
+                <strong>Setup Information: </strong>
+            </div>
+
+            <div class="col-4 col-m-6 mainsection">
+
+
+                <span class="red">*</span> First name:
+                <input type="text" name="firstname" required><br><br>
+                <span class="red">*</span> Last name:
+                <input type="text" name="lastname" required><br><br>
+                <span class="red">*</span> Date of Birth:
+                <input type="date" name="bday" required>
+                <br><br>
+                Path to Photo:
+                <input type="file" name="photo"><br>
+            </div>
+            <div class="col-4 col-m-6 mainsection">
+                <span class="red">*</span> Email Address:
+                <input type="text" name="email" readonly><br><br>
+                Language: <br>
+                <input type="radio" name="lang" id = "_english" value="english" checked> English<br>
+                <input type="radio" name="lang" id = "_spanish" value="spanish"> Spanish<br>
+                <input type="radio" name="lang" id = "_german" value="german"> German<br>
+
+                <br>
+                <img src="images/profile.png" alt="Profile" id="pro"><br><br>
+            </div>
+
+        </div>
+
+        <div class="col-12 mainsection">
+            <div class="col-4 col-m-12">
+                <strong>Billing Information: </strong>
+            </div>
+
+            <div class="col-8 col-m-12 mainsection">
+
+                <span class="red">*</span> Address:
+                <input type="text" name="address" required><br><br>
+                <span class="red">*</span> Payment method: <br>
+                <input type="radio" name="payment" id = "_credit" value="credit"> Credit Card<br>
+                <input type="radio" name="payment" id = "_bt" value="bankTransfer"> Bank Transfer<br>
+                <input type="radio" name="payment" id = "_paypal" value="paypal"> PayPal <br>
+                <br>
+
+                <div id="creditPanel">
+                    <span class="red">*</span> Card Number:
+                    <input type="text" name="cardNum" pattern = "^\d{9,18}$" id = "cardNum" value="1111111111111111"><br>
+                    <br>Card Number must be between 9-18 digits. <br><br>
+                    <span class="red">*</span> Valid Through:
+                    <input type="text" name="exp" id = "exp" value="mm/yyyy" pattern = "^\d{2}/\d{4}$"><br>
+                    <br>Expiration date must be of the format mm/yyyy where the month and year is in digits (ie 03/2017). <br>
+                    <br><span class="red">*</span> CVV Number:
+                    <input type="text" name="cvv" id = "cvv" pattern = "^\d{3}$" value="111">
+                    <br><br>CVV code must be a three digit number.
+                    <br>
+                </div>
+                <div id="btPanel">
+                    <span class="red">*</span> Account Holder Name:
+                    <input type="text" name="holder" id = "acctHolder" value=""><br>
+                    <span class="red">*</span> Bank Name:
+                    <input type="text" name="bankName" id = "bank" value=""><br>
+                    <span class="red">*</span> Account Number:
+                    <input type="text" name="acctNum" pattern = "^\d{8,18}$" id = "acctNum" value="">
+                    <br><br>Account Number must be between 8-18 digits.
+                    <br>
+                </div>
+                <div id="payPanel">
+                    <a href="https://www.paypal.com/es/home" target="_blank">Login Here</a>
+
+                    <br>
+                </div>
+
+
+
+            </div>
+            <div class="col-8 col-m-12 mainsection fr">
+                <p>
+                    <input type="checkbox" id="agree" required>I have read and agree to terms of use, privacy policy and use of cookies<br>
+                    <button type = button id = "save">Save</button> <button type = button onclick="cancel()">Cancel</button>
+                </p>
+            </div>
+        </div>
+    </form>
+</section>
+
+<footer class="col-12">
+
+    <div class="menu2">
+        <img src="images/copyright.png" alt="Copyright" class="top">
+        <a href="https://www.magicseaweed.com/" target="_blank">Surf</a> |
+        <img src="images/facebook-box.png" alt="Facebook" class="top">
+        <a href="https://www.facebook.com/" target="_blank">Facebook</a> |
+        <img src="images/twitter.png" alt="Twitter" class="top">
+        <a href="https://twitter.com/" target="_blank">Twitter</a>
+    </div>
+
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#_credit").click(function(){
+            $("#btPanel").slideUp("slow");
+            $("#payPanel").slideUp("slow");
+            $("#creditPanel").slideDown("slow");
+            console.log("click");
+
+        });
+        $("#_bt").click(function(){
+            $("#creditPanel").slideUp("slow");
+            $("#payPanel").slideUp("slow");
+            $("#btPanel").slideDown("slow");
+        });
+        $("#_paypal").click(function(){
+            $("#btPanel").slideUp("slow");
+            $("#creditPanel").slideUp("slow");
+            $("#payPanel").slideDown("slow");
+        });
+        $("#save").click(function(){
+                if($('#myform')[0].checkValidity())
+                {
+                    var t;
+                    if(document.getElementById("_paypal").checked == false && document.getElementById("_bt").checked == false && document.getElementById("_credit").checked == false)
+                    {
+                        t = false;
+                    }
+                    else
+                    {
+                        if(document.getElementById("_bt").checked == true)
+                        {
+                            if(document.getElementById("acctHolder").value.length != 0 && document.getElementById("bank").value.length != 0 && document.getElementById("acctNum").value.length != 0)
+                            {
+                                alert(document.getElementById("acctHolder").value.length + " " + document.getElementById("bank").value.length + " " + document.getElementById("acctNum").value.length)
+                                t = true;
+                            }
+                            else {t = false;}
+                        }
+                        else if (document.getElementById("_credit").checked == true)
+                        {
+                            var cn = document.getElementById("cardNum").value;
+                            var cvv = document.getElementById("cvv").value;
+                            var exp = document.getElementById("exp").value;
+                            if(cn != "1111111111111111" && cvv != "111" && exp != "mm/yyyy")
+                            {
+                                t = true;
+                            }
+                            else {t = false;}
+                        }
+                        else
+                        {
+                            t = true;
+                        }
+                    }
+                    if(t)
+                    {
+                        save();
+                    }
+                    else
+                    {
+                        alert("You have not filled out all required fields or one of your fields is in the wrong format");
+                    }
+                }
+                else
+                {
+                    alert("You have not filled out all required fields or one of your fields is in the wrong format.");
+                }
+        });
+    });
+    function cancel() {
+        var user = document.getElementsByName("email")[0].value;
+        var pass = document.getElementsByName("password")[0].value;
+        setCookie(user + "user**", "", 365);
+        setCookie(user + "fn**", "", 365);
+        setCookie(user + "ln**", "", 365);
+        setCookie(user + "dob**", "", 365);
+        setCookie(user + "lang**", "eng", 365);
+        setCookie(user + "add**", "", 365);
+        setCookie(user + "pay**", "", 365);
+        setCookie(user + "cn**", "1111111111111111", 365);
+        setCookie(user + "vt**", "mm/yyyy", 365);
+        setCookie(user + "cvv**", "111", 365);
+        document.getElementById("_paypal").checked = false;
+        document.getElementById("_bt").checked = false;
+        document.getElementById("_credit").checked = false;
+        refresh(user, pass);
+        setCookie(user + "pass**", "", 365);
+        document.getElementsByName("password")[0].value = "";
+
+    }
+
+    function save() {
+        var name = document.getElementsByName("email")[0].value;
+        var cname;
+        var val;
+        var temp;
+        var message = "";
+        cname = name + "user**";
+        val = document.getElementsByName("username")[0].value;
+        temp = returnValue(cname);
+        if (temp != "")
+        {
+            if ("=" + val != temp)
+            {
+                temp = temp.substring(1);
+                message = message + "The username was changed from \"" + temp + "\" to " + val + "\n";
+            }
+        }
+        setCookie(cname, val, 365);
+
+        cname = name + "pass**";
+        val = document.getElementsByName("password")[0].value;
+        temp = returnValue(cname);
+        if (temp != "")
+        {
+            if ("=" + val != temp)
+            {
+                temp = temp.substring(1);
+                message = message + "The password was changed from \"" + temp + "\" to " + val + "\n";
+            }
+        }
+        setCookie(cname, val, 365);
+
+
+        cname = name + "fn**";
+        val = document.getElementsByName("firstname")[0].value;
+        temp = returnValue(cname);
+        if (temp != "")
+        {
+            if ("=" + val != temp)
+            {
+                temp = temp.substring(1);
+                message = message + "The first name was changed from \"" + temp + "\" to " + val + "\n";
+            }
+        }
+        setCookie(cname, val, 365);
+
+        cname = name + "ln**";
+        val = document.getElementsByName("lastname")[0].value;
+        temp = returnValue(cname);
+        if (temp != "")
+        {
+            if ("=" + val != temp)
+            {
+                temp = temp.substring(1);
+                message = message + "The last name was changed from \"" + temp + "\" to " + val + "\n";
+            }
+        }
+        setCookie(cname, val, 365);
+
+        cname = name + "dob**";
+        val = document.getElementsByName("bday")[0].value;
+        temp = returnValue(cname);
+        if (temp != "")
+        {
+            if ("=" + val != temp)
+            {
+                temp = temp.substring(1);
+                message = message + "The date of birth was changed from \"" + temp + "\" to " + val + "\n";
+            }
+        }
+        setCookie(cname, val, 365);
+        /*
+        cname = name + "path**";
+        val = document.getElementsByName("photo")[0].value;
+        temp = returnValue(cname);
+        if (temp != "")
+        {
+            if ("=" + val != temp)
+            {
+                temp = temp.substring(1);
+                message = message + "The path of the photo was changed from \"" + temp + "\" to " + val + "\n";
+            }
+        }
+        setCookie(cname, val, 365);
+        */
+        cname = name + "lang**";
+        temp = returnValue(cname);
+        if(document.getElementById("_english").checked)
+        {
+            if (temp != "=eng")
+            {
+                if (temp == "=span")
+                {
+                    temp = temp.substring(1);
+                    message = message + "The language was changed from Spanish to English \n";
+                }
+                else
+                {
+                    temp = temp.substring(1);
+                    message = message + "The language was changed from German to English \n";
+                }
+            }
+            setCookie(cname, "eng", 365);
+        }
+        else if(document.getElementById("_spanish").checked)
+        {
+            if (temp != "=span")
+            {
+                temp = temp.substring(1);
+                if (temp == "eng")
+                {
+                    message = message + "The language was changed from English to Spanish \n";
+                }
+                else
+                {
+                    message = message + "The language was changed from German to Spanish \n";
+                }
+            }
+            setCookie(cname, "span", 365);
+        }
+        else
+        {
+            if (temp != "=ger")
+            {
+                temp = temp.substring(1);
+                if (temp == "span")
+                {
+                    message = message + "The language was changed from Spanish to German \n";
+                }
+                else
+                {
+                    message = message + "The language was changed from English to German \n";
+                }
+            }
+            setCookie(cname, "ger", 365);
+        }
+
+        cname = name + "add**";
+        val = document.getElementsByName("address")[0].value;
+        temp = returnValue(cname);
+        if (temp != "")
+        {
+            if ("=" + val != temp)
+            {
+                temp = temp.substring(1);
+                message = message + "The address was changed from \"" + temp + "\" to " + val + "\n";
+            }
+        }
+        setCookie(cname, val, 365);
+
+        cname = name + "pay**";
+        temp = returnValue(cname);
+        if(document.getElementById("_credit").checked)
+        {
+            if (temp != "=c")
+            {
+                if (temp == "=b")
+                {
+                    temp = temp.substring(1);
+                    message = message + "The payment type was changed from bank transfer to credit card\n";
+                }
+                else if (temp == "=p")
+                {
+                    temp = temp.substring(1);
+                    message = message + "The payment type was changed from Paypal to credit card \n";
+                }
+                else
+                {
+                    message = message + "The payment type was changed from unchecked to credit card \n";
+                }
+            }
+            setCookie(cname, "c", 365);
+        }
+        else if(document.getElementById("_bt").checked)
+        {
+            if (temp != "=b")
+            {
+                if (temp == "=c") {
+                    temp = temp.substring(1);
+                    message = message + "The payment type was changed from credit card to bank transfer \n";
+                }
+                else if(temp == "=p")
+                {
+                    temp = temp.substring(1);
+                    message = message + "The payment type was changed from Paypal to bank transfer\n";
+                }
+                else
+                {
+                    message = message + "The payment type was changed from unchecked to bank transfer\n";
+                }
+            }
+            setCookie(cname, "b", 365);
+        }
+        else
+        {
+            if (temp != "=p")
+            {
+                if (temp == "=b") {
+                    temp = temp.substring(1);
+                    message = message + "The payment type was changed from bank transfer to Paypal\n";
+                }
+                else if(temp == "=c")
+                {
+                    temp = temp.substring(1);
+                    message = message + "The payment type was changed from credit card to Paypal\n";
+                }
+                else
+                {
+                    message = message + "The payment type was changed from unchecked to Paypal\n";
+                }
+            }
+            setCookie(cname, "p", 365);
+        }
+
+        cname = name + "cn**";
+        val = document.getElementsByName("cardNum")[0].value;
+        temp = returnValue(cname);
+        if (temp != "")
+        {
+            if ("=" + val != temp)
+            {
+                temp = temp.substring(1);
+                message = message + "The card number was changed from \"" + temp + "\" to " + val + "\n";
+            }
+        }
+        setCookie(cname, val, 365);
+
+        cname = name + "vt**";
+        val = document.getElementsByName("exp")[0].value;
+        temp = returnValue(cname);
+        if (temp != "")
+        {
+            if ("=" + val != temp)
+            {
+                temp = temp.substring(1);
+                message = message + "The valid through was changed from \"" + temp + "\" to " + val + "\n";
+            }
+        }
+        setCookie(cname, val, 365);
+
+        cname = name + "cvv**";
+        val = document.getElementsByName("cvv")[0].value;
+        temp = returnValue(cname);
+        if (temp != "")
+        {
+            if ("=" + val != temp)
+            {
+                temp = temp.substring(1);
+                message = message + "The CVV code was changed from \"" + temp + "\" to " + val + "\n";
+            }
+        }
+        setCookie(cname, val, 365);
+        var pass = document.getElementsByName("password")[0].value;
+        refresh(name, pass);
+        if (message != "")
+        {
+            alert(message);
+        }
+
+    }
+
+</script>
+</body>
+</html>

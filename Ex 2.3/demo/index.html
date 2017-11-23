@@ -1,0 +1,211 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>jQuery memory card / concentration / pairs game</title>
+    <meta name="description" content="Quizy jquery plugin for creating memory game (concentration gaim, pairs game)">
+    <meta name="keywords" content="jquery plugin, memory game, concentration, pairs game, javascript, jquery"/>
+
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="../css/quizymemorygame.css">
+
+    <style>
+        body {
+            font-family: Helvetica, Arial, Verdana;
+            text-align: center;
+        }
+
+        #tutorial-memorygame {
+            margin: auto;
+            width: 780px;
+            display: none;
+        }
+
+        .text-style1 {
+            font-size: 14pt;
+            color: #56605f;
+            font-weight: normal;
+            text-shadow: 1px 1px 1px #fff;
+            margin: 0;
+            line-height: 24pt;
+        }
+
+        .reset-button {
+            margin: 0 0 1.5em 0;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<!-- group 17 -->
+<div id="dialog-form" title="Login">
+    <p>Settings for memory game</p>
+
+    <form>
+        <fieldset>
+            Number<br>
+            <input type="number" name="pair" id="pair" min="3" max="10" value="6"><br>
+            Time (seconds)<br>
+            <input type="number" name="time" id="time" min="10" max="120" value="60"><br><br>
+
+            <input type="button" name="startGameBtn" value="Let's go" onclick="adaptGame()">
+        </fieldset>
+    </form>
+</div>
+
+<h1>QuizY jQuery memory plugin</h1>
+
+<div id="main" role="main">
+    <div>
+        <p>Founded pair: <span id="foundPair">0</span></p>
+        <p>Time: <span id="timeCounter">0</span></p>
+    </div>
+
+    <div id="tutorial-memorygame" class="quizy-memorygame">
+        <ul>
+            <li class="match1">
+                <img src="img/flag-Bulgaria.png" alt="Bulgaria">
+            </li>
+            <li class="match2">
+                <img src="img/flag-Cuba.png" alt="Cuba">
+            </li>
+            <li class="match3">
+                <img src="img/flag-Sweden.png" alt="Sweden">
+            </li>
+            <li class="match4">
+                <img src="img/flag-NewZealand.png" alt="New Zealand">
+            </li>
+            <li class="match5">
+                <img src="img/flag-Uruguay.png" alt="Uruguay">
+            </li>
+            <li class="match6">
+                <img src="img/flag-Tunisia.png" alt="Tunisia">
+            </li>
+            <li class="match7">
+                <img src="img/flag-Germany.png" alt="Germany">
+            </li>
+            <li class="match8">
+                <img src="img/flag-Spain.png" alt="Spain">
+            </li>
+            <li class="match9">
+                <img src="img/flag-USA.png" alt="USA">
+            </li>
+            <li class="match10">
+                <img src="img/flag-Peru.png" alt="Peru">
+            </li>
+            <li class="match1">
+                <img src="img/flag-Bulgaria.png" alt="Bulgaria">
+            </li>
+            <li class="match2">
+                <img src="img/flag-Cuba.png" alt="Cuba">
+            </li>
+            <li class="match3">
+                <img src="img/flag-Sweden.png" alt="Sweden">
+            </li>
+            <li class="match4">
+                <img src="img/flag-NewZealand.png" alt="New Zealand">
+            </li>
+            <li class="match5">
+                <img src="img/flag-Uruguay.png" alt="Uruguay">
+            </li>
+            <li class="match6">
+                <img src="img/flag-Tunisia.png" alt="Tunisia">
+            </li>
+            <li class="match7">
+                <img src="img/flag-Germany.png" alt="Germany">
+            </li>
+            <li class="match8">
+                <img src="img/flag-Spain.png" alt="Spain">
+            </li>
+            <li class="match9">
+                <img src="img/flag-USA.png" alt="USA">
+            </li>
+            <li class="match10">
+                <img src="img/flag-Peru.png" alt="Peru">
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="reset-button">
+        <a id="restart" href="">Reset game</a>
+    </div>
+
+    <div>Flag icons for this demo - by <a href="http://www.gosquared.com/liquidicity/archives/1493" target="_blank">James
+        Gill</a></div>
+
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../js/jquery-1.7.1.min.js"><\/script>')</script>
+<script src="../js/jquery-ui-1.8.17.custom.min.js"></script>
+
+<script src="../js/jquery.flip.min.js"></script>
+<script src="../js/jquery.quizymemorygame.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+
+        // After loading the page, open login dialog
+        $('#dialog-form').dialog({
+            height: 400,
+            width: 350,
+            modal: true
+        }).parent().find('.ui-dialog-titlebar-close').hide(); // Hide the close button
+    });
+
+    function adaptGame() {
+        var formData = $("form").serializeArray();
+        var formNum, formTime;
+        $.each(formData, function (i, field) {
+            if (field.name === "pair") {
+                formNum = field.value;
+            }
+            else if (field.name === "time") {
+                formTime = field.value;
+            }
+        });
+
+        if (Number(formNum) < 3 || Number(formNum) > 10 || Number(formTime) < 10 || Number(formTime) > 120) {
+            window.alert("Please check!\r\nNumber should be between 3 and 10.\r\nTime should be between 10 and 120.");
+        }
+        else {
+            //memory is created by the li, so remove the items to the selected number
+            for (var i = (Number(formNum) + 1); i <= 10; i++) {
+                $(document.getElementsByClassName("match" + i)).remove();
+            }
+
+            document.getElementById("tutorial-memorygame").style.display = "flex";
+            document.getElementById("timeCounter").innerHTML = formTime;
+
+            var quizyParams = {
+                itemWidth: 156,
+                itemHeight: 156,
+                itemsMargin: 40,
+                colCount: 4,
+                animType: 'flip',
+                flipAnim: 'tb',
+                animSpeed: 250,
+                resultIcons: true,
+                randomised: true,
+                maxTime: formTime
+            };
+            $('#tutorial-memorygame').quizyMemoryGame(quizyParams);
+            $('#restart').click(function () {
+                $('#tutorial-memorygame').quizyMemoryGame('restart');
+                return false;
+            });
+
+            $('#dialog-form').dialog('close');
+        }
+    }
+
+
+</script>
+
+</body>
+</html>

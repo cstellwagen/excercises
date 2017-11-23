@@ -1,0 +1,121 @@
+*{
+    box-sizing: border-box;
+    font-family: "Helvetica", sans-serif;
+}
+[class*="col-"]{
+    float: left;
+}                
+.mainpage::after{
+    content:"";
+    clear:both;
+    display:table;
+}
+header,footer
+{
+    background-color: darkseagreen;
+    color: white;
+    border:5px solid black;
+    border-radius: 25px;
+    height: 100%;
+    padding:10px;
+    background-image: url("../images/final.png");
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: 150px 120px;
+}
+.top{
+    vertical-align: top;
+}
+footer{
+    padding:30px;
+}
+.surf
+{
+    font-size: 87px;
+    font-variant:small-caps;
+    font-family: Impact, "Courier New", monospace;
+    float:left;
+    padding: 10px;
+    padding-left: 175px;
+}
+.menu
+{
+    float:right;
+    font-size: large;
+}
+.menu2
+{
+    float:right;
+    font-size: large;
+}
+.mainpage
+{
+    background-image: url(../images/optionalback.jpg);
+    background-size: cover;
+    color: black;
+    border-top:10px solid white;
+    border-bottom:10px solid white;
+    float:left;
+    padding:10px;
+}
+.tophalf
+{
+    border-bottom: double darkred;
+}
+
+
+#pro
+{
+    width:90px;
+    height:90px;
+}
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+@media only screen and (max-width: 768px) {
+    /* For tablets: */
+    .col-m-1 {width: 8.33%;}
+    .col-m-2 {width: 16.66%;}
+    .col-m-3 {width: 25%;}
+    .col-m-4 {width: 33.33%;}
+    .col-m-5 {width: 41.66%;}
+    .col-m-6 {width: 50%;}
+    .col-m-7 {width: 58.33%;}
+    .col-m-8 {width: 66.66%;}
+    .col-m-9 {width: 75%;}
+    .col-m-10 {width: 83.33%;}
+    .col-m-11 {width: 91.66%;}
+    .col-m-12 {width: 100%;}
+    .menu
+    {
+        float:left;
+        padding:0px;
+    }
+}
+@media only screen and (max-width: 600px) {
+    /* For mobiles: */
+    [class*="col-"]{
+        width:100%;
+    }
+    .menu
+    {
+        float:left;
+        padding:0px;
+    }
+    [class*="link"]
+    {
+        float:left;
+        width:100%;
+    }
+}
